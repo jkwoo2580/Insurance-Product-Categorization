@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보험 용어 상세 정리</title>
+<style>
+  :root{
+    --navy:#1a3c5e;
+    --blue:#2a6db0;
+    --sky:#5b9bd5;
+    --light:#eef4fb;
+    --line:#d4e0ee;
+    --text:#222;
+    --muted:#5a6b7b;
+    --green:#3a8a5f;
+    --amber:#b57a10;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{
+    font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
+    color:var(--text);
+    line-height:1.65;
+    background:#f0f2f5;
+    padding:20px 12px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:820px;
+    margin:0 auto;
+    background:#fff;
+    padding:32px 36px;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
+    border-radius:8px;
+  }
+
+  header{
+    border-bottom:3px solid var(--navy);
+    padding-bottom:14px;
+    margin-bottom:26px;
+  }
+  header h1{ font-size:1.7rem; color:var(--navy); letter-spacing:-.5px; }
+  header p{ color:var(--muted); font-size:.9rem; margin-top:6px; }
+
+  h2{
+    font-size:1.15rem;
+    color:#fff;
+    background:var(--navy);
+    padding:8px 14px;
+    border-radius:5px;
+    margin:32px 0 18px;
+  }
+  h2 .num{
+    display:inline-block;
+    background:rgba(255,255,255,.25);
+    border-radius:50%;
+    width:24px; height:24px; line-height:24px;
+    text-align:center; font-size:.85rem; margin-right:8px;
+  }
+
+  /* ── 시각적 트리 ── */
+  .tree{ padding:4px 0; }
+  /* 최상위 노드 */
+  .root{
+    text-align:center;
+    margin-bottom:6px;
+  }
+  .root .node{
+    display:inline-block;
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+    font-size:1.05rem;
+    padding:10px 30px;
+    border-radius:8px;
+  }
+  .branches{ position:relative; }
+  /* 1단계 그룹 (손해/생명/제3) */
+  .group{
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin:14px 0;
+    overflow:hidden;
+  }
+  .group > .head{
+    background:var(--blue);
+    color:#fff;
+    padding:10px 16px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:6px 10px;
+  }
+  .group > .head .title{ font-weight:700; font-size:1.02rem; }
+  .group > .head .tag{
+    font-size:.78rem;
+    background:rgba(255,255,255,.22);
+    padding:2px 8px;
+    border-radius:10px;
+  }
+  .group > .head .desc{ font-size:.82rem; opacity:.92; width:100%; }
+  .group .body{ padding:12px 16px; }
+
+  /* 2단계 노드 (자식 카드) */
+  .child{
+    border-left:3px solid var(--sky);
+    background:var(--light);
+    border-radius:0 6px 6px 0;
+    padding:9px 14px;
+    margin:8px 0;
+  }
+  .child .c-title{ font-weight:600; color:var(--navy); font-size:.94rem; }
+  .child .c-desc{ font-size:.85rem; color:var(--muted); margin-top:2px; }
+
+  /* 3단계 (손자) - 들여쓰기 */
+  .subwrap{ margin:8px 0 8px 18px; padding-left:14px; border-left:2px dashed var(--line); }
+  .leaf{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:8px 12px;
+    margin:7px 0;
+  }
+  .leaf .l-title{ font-weight:600; font-size:.9rem; color:var(--blue); }
+  .leaf .l-desc{ font-size:.83rem; color:var(--muted); margin-top:2px; }
+
+  /* ── 상세 설명 카드 ── */
+  .detail{
+    border:1px solid var(--line);
+    border-radius:7px;
+    padding:14px 18px;
+    margin-bottom:12px;
+    background:#fff;
+  }
+  .detail h3{
+    font-size:1rem;
+    color:var(--navy);
+    margin-bottom:4px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .detail h3 .badge{
+    font-size:.72rem;
+    font-weight:600;
+    color:#fff;
+    background:var(--sky);
+    padding:2px 9px;
+    border-radius:10px;
+  }
+  .detail p{ font-size:.9rem; color:#333; }
+  .detail .key{
+    display:inline-block;
+    margin-top:7px;
+    font-size:.82rem;
+    color:var(--blue);
+    background:var(--light);
+    padding:3px 10px;
+    border-radius:4px;
+  }
+
+  /* 표 */
+  .table-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table{ width:100%; border-collapse:collapse; font-size:.9rem; min-width:480px; }
+  th,td{ border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+  th{ background:var(--blue); color:#fff; font-weight:600; }
+  tbody tr:nth-child(even){ background:#f7fafd; }
+  td strong{ color:var(--navy); }
+
+  /* 조합 예시 */
+  .combo{
+    background:#fff8ec;
+    border:1px solid #f0d9a8;
+    border-radius:6px;
+    padding:14px 18px;
+  }
+  .combo p{ margin:6px 0; font-size:.92rem; }
+  .combo p b{ color:var(--amber); }
+
+  footer{
+    margin-top:34px; padding-top:14px;
+    border-top:1px solid var(--line);
+    font-size:.78rem; color:var(--muted); text-align:center;
+  }
+
+  /* ── 모바일 ── */
+  @media (max-width:600px){
+    body{ padding:10px 6px; }
+    .page{ padding:20px 16px; }
+    header h1{ font-size:1.35rem; }
+    h2{ font-size:1.02rem; }
+    table{ font-size:.82rem; }
+    th,td{ padding:8px; }
+    .root .node{ padding:9px 22px; font-size:1rem; }
+    .subwrap{ margin-left:8px; padding-left:10px; }
+  }
+
+  /* ── A4 인쇄 ── */
+  @page{ size:A4; margin:15mm; }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .page{ max-width:100%; box-shadow:none; border-radius:0; padding:0; }
+    h2, header, .group, .child, .leaf, .detail, .combo, table, section{
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    .group, .detail, .combo, .child, .leaf, tr{ page-break-inside:avoid; }
+    h2, h3{ page-break-after:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>보험 용어 상세 정리</h1>
+    <p>손해보험 · 생명보험 · 종신 · 연금 · 변액 · 제3보험 · 보장성보험</p>
+  </header>
+
+  <!-- 1. 시각적 트리 -->
+  <section>
+    <h2><span class="num">1</span>전체 구조 (분류 트리)</h2>
+    <div class="tree">
+      <div class="root"><span class="node">보험</span></div>
+      <div class="branches">
+
+        <!-- 손해보험 -->
+        <div class="group">
+          <div class="head">
+            <span class="title">손해보험</span>
+            <span class="tag">실손보상</span>
+            <span class="desc">우연한 사고로 생긴 재산 손해를, 실제 손해액만큼만 보상 (이득금지 원칙)</span>
+          </div>
+          <div class="body">
+            <div class="child">
+              <div class="c-title">자동차 · 화재 · 배상책임 · 여행자보험</div>
+              <div class="c-desc">손해가 발생해야, 그리고 발생한 만큼만 보상</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 생명보험 -->
+        <div class="group">
+          <div class="head">
+            <span class="title">생명보험</span>
+            <span class="tag">정액보상</span>
+            <span class="desc">사람의 생존·사망을 사고로 하여, 미리 정한 금액을 그대로 지급</span>
+          </div>
+          <div class="body">
+            <div class="child">
+              <div class="c-title">사망보험</div>
+              <div class="c-desc">피보험자가 사망했을 때 보험금 지급</div>
+              <div class="subwrap">
+                <div class="leaf">
+                  <div class="l-title">종신보험</div>
+                  <div class="l-desc">기간 제한 없이 평생 보장, 사망 시 반드시 지급 → 유족·상속 대비</div>
+                </div>
+                <div class="leaf">
+                  <div class="l-title">정기보험</div>
+                  <div class="l-desc">정해진 기간 안에 사망한 경우에만 지급</div>
+                </div>
+              </div>
+            </div>
+            <div class="child">
+              <div class="c-title">생존보험</div>
+              <div class="c-desc">약정 시점까지 생존해 있을 때 지급</div>
+              <div class="subwrap">
+                <div class="leaf">
+                  <div class="l-title">연금보험</div>
+                  <div class="l-desc">노후까지 생존 시 일정 시점부터 연금 형태로 분할 지급 → 노후 대비</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 제3보험 -->
+        <div class="group">
+          <div class="head">
+            <span class="title">제3보험</span>
+            <span class="tag">생보 + 손보 혼합</span>
+            <span class="desc">사람의 질병·상해·간병 손해 보장, 생보사·손보사 모두 판매 가능</span>
+          </div>
+          <div class="body">
+            <div class="child">
+              <div class="c-title">상해 · 질병 · 간병보험</div>
+              <div class="c-desc">실손 보상과 정액 지급이 섞여 있음 (예: 실손의료보험 = 실비보험)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 용어별 상세 설명 -->
+  <section>
+    <h2><span class="num">2</span>용어별 상세 설명</h2>
+
+    <div class="detail">
+      <h3>손해보험 <span class="badge">보험업 종류</span></h3>
+      <p>우연한 사고로 발생한 재산상의 손해를 보상하는 보험. 실제로 입은 손해액만큼만 보상하는 <b>실손보상</b>이 원칙이라 보험으로 이득을 볼 수 없습니다(이득금지 원칙). 자동차·화재·배상책임·여행자보험 등이 해당합니다.</p>
+      <span class="key">핵심 : 재산 손해를 손해액만큼 보상</span>
+    </div>
+
+    <div class="detail">
+      <h3>생명보험 <span class="badge">보험업 종류</span></h3>
+      <p>사람의 생존 또는 사망을 보험사고로 하여 미리 약정한 금액을 지급하는 보험. 사람의 생명·신체는 금전으로 가치를 매길 수 없어, 실제 손해액이 아니라 계약 시 정한 금액을 지급하는 <b>정액보상</b>이 원칙입니다.</p>
+      <span class="key">핵심 : 생존·사망에 정해진 금액 지급</span>
+    </div>
+
+    <div class="detail">
+      <h3>종신보험 <span class="badge">지급 목적 · 보장성</span></h3>
+      <p>사망보험의 대표 형태로, 기간을 한정하지 않고 피보험자가 사망하면 <b>반드시</b> 보험금을 지급합니다. 사람은 언젠가 사망하므로 지급이 확정적이며, 남은 가족의 생활 보장·상속·유족 대비 목적으로 활용됩니다. 정해진 기간 내 사망만 보장하는 '정기보험'과 대비됩니다.</p>
+      <span class="key">핵심 : 평생 보장, 사망 시 반드시 지급</span>
+    </div>
+
+    <div class="detail">
+      <h3>연금보험 <span class="badge">지급 목적 · 저축성</span></h3>
+      <p>생존보험 계열로, 노후까지 생존해 있으면 일정 시점부터 연금 형태로 나누어 지급합니다. 은퇴 이후 소득 공백을 메우는 노후 대비 목적이 강하며, 세제 혜택 여부에 따라 세제적격(연금저축보험)·세제비적격(일반 연금보험)으로 나뉩니다.</p>
+      <span class="key">핵심 : 노후 대비, 생존 시 연금 지급</span>
+    </div>
+
+    <div class="detail">
+      <h3>변액보험 <span class="badge">운용 방식</span></h3>
+      <p>낸 보험료의 일부를 주식·채권 등 펀드에 투자하고, 운용 실적에 따라 보험금·해지환급금이 달라지는 상품. 실적이 좋으면 더 받지만 <b>원금 손실</b>도 가능해 투자 위험을 계약자가 부담합니다. 변액종신·변액연금·변액유니버셜 등으로 나뉘고, 투자성이 있어 자본시장법 규제도 일부 적용됩니다.</p>
+      <span class="key">핵심 : 펀드 투자, 실적 따라 변동 (원금손실 가능)</span>
+    </div>
+
+    <div class="detail">
+      <h3>제3보험 <span class="badge">보험업 종류</span></h3>
+      <p>생명보험과 손해보험의 성격을 동시에 지니는 영역으로, 사람의 질병·상해·간병 손해를 보장합니다. 실손 보상과 정액 지급이 섞여 있어 어느 한쪽으로 분류하기 어렵고, 그래서 생보사·손보사 모두 판매할 수 있습니다. 대표 상품이 실손의료보험(실비보험)입니다.</p>
+      <span class="key">핵심 : 질병·상해·간병 보장, 생보+손보 혼합</span>
+    </div>
+
+    <div class="detail">
+      <h3>보장성보험 <span class="badge">기능</span></h3>
+      <p>사망·질병·상해 등 위험 보장에 초점을 맞춘 보험. 만기 생존 시 돌려받는 환급금이 낸 보험료보다 적거나 없는 것이 일반적이지만, 보험료 대비 보장 규모가 큽니다. 종신·정기·암·실손보험이 해당하며, 만기에 낸 돈 이상을 돌려받는 <b>저축성보험</b>(저축·연금)과 대비됩니다.</p>
+      <span class="key">핵심 : 위험 대비 목적, 환급금 적거나 없음</span>
+    </div>
+  </section>
+
+  <!-- 3. 표 -->
+  <section>
+    <h2><span class="num">3</span>헷갈리기 쉬운 핵심 : 기준이 다르다</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>나누는 기준</th><th>구분</th><th>예시</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>보험업 종류</strong></td><td>손해 / 생명 / 제3보험</td><td>자동차보험 / 종신보험 / 실손보험</td></tr>
+          <tr><td><strong>지급 목적</strong></td><td>사망 보장 / 노후 대비</td><td>종신보험 / 연금보험</td></tr>
+          <tr><td><strong>운용 방식</strong></td><td>일반형 / 변액형(투자·원금손실 가능)</td><td>일반연금 / 변액연금</td></tr>
+          <tr><td><strong>기능</strong></td><td>보장성 / 저축성</td><td>암·종신보험 / 연금보험</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. 조합 예시 -->
+  <section>
+    <h2><span class="num">4</span>기준이 겹치는 상품 예 (이해 굳히기)</h2>
+    <div class="combo">
+      <p><b>변액연금보험</b> = 연금(목적) + 변액(운용) + 저축성(기능)</p>
+      <p><b>변액종신보험</b> = 종신(목적) + 변액(운용) + 보장성(기능)</p>
+    </div>
+  </section>
+
+  <footer>
+    개인 학습 정리용 &nbsp;|&nbsp; 브라우저에서 <b>Ctrl/Cmd + P</b> → A4 인쇄 (배경 그래픽 체크)
+  </footer>
+
+</div>
+</body>
+</html>
